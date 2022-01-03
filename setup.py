@@ -10,7 +10,7 @@ def package_files(directory):
             paths.append(os.path.join('..', path, filename))
     return paths
 
-package_data = ['modules/mavproxy_map/data/*.jpg', 
+package_data = ['modules/mavproxy_map/data/*.jpg',
                 'modules/mavproxy_map/data/*.png',
                 'modules/mavproxy_mmap/mmap_app/*',
                 'modules/mavproxy_joystick/joysticks/*.yml',
@@ -97,7 +97,9 @@ on how to use MAVProxy.''',
                'MAVProxy/tools/mavflightview.py',
                'MAVProxy/tools/MAVExplorer.py',
                'MAVProxy/modules/mavproxy_map/mp_slipmap.py',
-               'MAVProxy/modules/mavproxy_map/mp_tile.py'],
+               'MAVProxy/modules/mavproxy_map/mp_tile.py',
+               'bin/connected_devices',
+               'bin/ip_addresses'],
       package_data={'MAVProxy':
                     package_data}
     )
