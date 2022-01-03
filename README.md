@@ -9,6 +9,15 @@ Please see https://ardupilot.org/mavproxy/index.html for more information
 This ground station was developed as part of the CanberraUAV OBC team
 entry
 
+Fork
+----
+
+This fork of MAVProxy is intended to add some extra helper modules for use on a Raspberry Pi bridge to a GCS.
+
+Modules added:
+
+- [mavproxy_hostapd.py](https://github.com/Matchstic/MAVProxy/wiki/mavproxy_hostapd.py)
+
 License
 -------
 
