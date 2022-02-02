@@ -17,6 +17,7 @@ This fork of MAVProxy is intended to add some extra helper modules for use on a 
 Modules added:
 
 - [mavproxy_hostapd.py](https://github.com/Matchstic/MAVProxy/wiki/mavproxy_hostapd.py)
+- [mavproxy_fping.py](https://github.com/Matchstic/MAVProxy/wiki/mavproxy_fping.py)
 
 License
 -------
