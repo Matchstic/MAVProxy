@@ -23,36 +23,39 @@ def fping_thread(this):
 
     while True:
         # Get own address
-        own_address = subprocess.run(OWN_IP_COMMAND, stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8').strip()
+        ifconfig_res = subprocess.run(OWN_IP_COMMAND, stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8').strip()
 
         # Example:
         # fping -g -r 1 192.168.1.0/24 2>1 | grep "alive"
 
-        fping_addr_start = own_address.split('.')[:3]
-        fping_addr = '.'.join(fping_addr_start) + '.0'
-        fping_command = 'fping -g -r 1 ' + fping_addr + '/24 2>1 | grep "alive"'
+        own_addresses = ifconfig_res.split('\n')
 
-        # Check fping for connections, creating new downstream links if needed
-        connected = subprocess.run(fping_command, stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8').split('\n')
+        for own_address in own_addresses:
+            fping_addr_start = own_address.split('.')[:3]
+            fping_addr = '.'.join(fping_addr_start) + '.0'
+            fping_command = 'fping -g -r 1 ' + fping_addr + '/24 2>1 | grep "alive"'
 
-        ips = []
+            # Check fping for connections, creating new downstream links if needed
+            connected = subprocess.run(fping_command, stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8').split('\n')
 
-        for line in connected:
-            address = line.split(' ')[0]
+            ips = []
 
-            if address != own_address and address != '':
-                ips.append(address)
+            for line in connected:
+                address = line.split(' ')[0]
 
-        # Apply new connections, then drop old
-        for ip in ips:
-            if ip not in this.known_connections:
-                this.add_device(ip)
-                this.known_connections.append(ip)
+                if address != own_address and address != '':
+                    ips.append(address)
 
-        for known_ip in this.known_connections:
-            if known_ip not in ips:
-                this.remove_device(known_ip)
-                this.known_connections.remove(known_ip)
+            # Apply new connections, then drop old
+            for ip in ips:
+                if ip not in this.known_connections:
+                    this.add_device(ip)
+                    this.known_connections.append(ip)
+
+            for known_ip in this.known_connections:
+                if known_ip not in ips:
+                    this.remove_device(known_ip)
+                    this.known_connections.remove(known_ip)
 
         time.sleep(5)
 
